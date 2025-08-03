@@ -5,8 +5,9 @@ class ApplicationController < ActionController::Base
 
   def authenticate_user!
     unless user_signed_in?
-      render json: { error: 'Unauthorized' }, status: :unauthorized
+      flash[:alert] = "Devi prima autenticarti"
+      redirect_to root_path
     end
   end
-  
+
 end

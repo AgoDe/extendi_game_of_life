@@ -1,17 +1,58 @@
 <div class="w-full text-center mb-4">
   <h1 class="text-2xl font-bold mb-4">Game of Life - In Corso</h1>
 </div>
-
 <div class="max-w-4xl mx-auto">
   <div class="bg-white p-6 rounded-lg shadow-md">
-    <h2 class="text-xl font-semibold mb-4">File caricato con successo!</h2>
     
-    <div class="bg-gray-100 p-4 rounded-md mb-4">
-      <h3 class="font-medium mb-2">Contenuto del file:</h3>
+    <div class="bg-gray-100 p-4 rounded-md mb-4 text-center">
+      <h3 class="font-medium mb-2">contenuto del file caricato:</h3>
       <pre class="text-sm whitespace-pre-wrap"><%= @file_content %></pre>
     </div>
     
-    <div class="text-center">
+    <div class=" mt-8">
+      <div class="flex justify-center">
+        <div>
+          <h2 class="font-semibold mb-2 text-center">Generazione corrente: <%= @game_service.generation %></h2>
+          <table class="border-collapse mx-auto">
+            <tbody>
+              <% @game_service.matrix.each do |row| %>
+                <tr>
+              <% row.each do |cell| %>
+                <td class="w-8 h-8 text-center align-middle border border-gray-300 text-2xl">
+                  <% if cell == '*' %>
+                    👾
+                  <% end %>
+                </td>
+              <% end %>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="flex justify-center mt-6">
+        <div>
+          <h2 class="font-semibold mb-2 text-center">Prossima generazione: <%= @game_service.generation + 1 %></h2>
+          <table class="border-collapse">
+            <tbody>
+              <% @game_service.new_matrix.each do |row| %>
+                <tr>
+                  <% row.each do |cell| %>
+                    <td class="w-8 h-8 text-center align-middle border border-gray-300 text-2xl">
+                      <% if cell == '*' %>
+                        👾
+                      <% end %>
+                    </td>
+                  <% end %>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center mt-6">
       <%= link_to "Torna alla Home", root_path, class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-200" %>
     </div>
   </div>

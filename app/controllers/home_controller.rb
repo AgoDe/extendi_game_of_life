@@ -6,7 +6,6 @@ class HomeController < ApplicationController
     if params[:file].present?
       uploaded_file = params[:file]
       
-      # Validazione del file
       if uploaded_file.content_type != 'text/plain'
         flash[:alert] = "Il file deve essere un file di testo (.txt)"
         redirect_to root_path and return
@@ -17,10 +16,10 @@ class HomeController < ApplicationController
         redirect_to root_path and return
       end
       
-      # Salva il contenuto in sessione e reindirizza alla pagina game
-      session[:file_content] = uploaded_file.read
+      file_content = uploaded_file.read
       flash[:notice] = "File caricato con successo!"
-      redirect_to game_path
+      redirect_to game_path(file_content: Base64.strict_encode64(file_content))
+
     else
       flash[:alert] = "Devi selezionare un file"
       redirect_to root_path
@@ -28,10 +27,10 @@ class HomeController < ApplicationController
   end
 
   def game
-    # Recupera il contenuto del file dalla sessione
-    @file_content = session[:file_content]
-    
-    if @file_content.nil?
+    if params[:file_content].present?
+      @file_content = Base64.decode64(params[:file_content]).force_encoding('UTF-8')
+      @game_service = GameService.new(@file_content)
+    else
       flash[:alert] = "Nessun file caricato"
       redirect_to root_path
     end
